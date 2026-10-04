@@ -1,0 +1,6 @@
+bin/
+obj/
+.vs/
+*.user
+*.suo
+21_NguyenQuangHuy_Assignment01/21_NguyenQuangHuy_Assignment01_BackEnd/appsettings.json

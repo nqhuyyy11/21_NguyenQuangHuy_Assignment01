@@ -1,0 +1,88 @@
+﻿@model List<_21_NguyenQuangHuy_Assignment01_FrontEnd.Models.NewsArticleVM>
+@{
+    ViewData["Title"] = "My News History";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+        <h2 class="fw-bold mb-0"><i class="bi bi-clock-history text-primary me-2"></i>My News History</h2>
+        <p class="text-muted small mb-0">List of news articles created by your account</p>
+    </div>
+    <div>
+        <button class="btn btn-primary" data-modal-url="@Url.Action("Create")">
+            <i class="bi bi-file-earmark-plus me-1"></i> Create Article
+        </button>
+    </div>
+</div>
+
+<div class="card shadow-sm border-0">
+    <div class="table-responsive">
+        <table class="table table-hover align-middle mb-0">
+            <thead class="table-light">
+                <tr>
+                    <th style="width: 70px;">ID</th>
+                    <th>Title & Headline</th>
+                    <th>Category</th>
+                    <th>Status</th>
+                    <th>Created Date</th>
+                    <th>Last Modified</th>
+                    <th class="text-end" style="width: 170px;">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model == null || Model.Count == 0)
+                {
+                    <tr>
+                        <td colspan="7" class="text-center py-5 text-muted">
+                            <i class="bi bi-journal-x fs-1 d-block mb-2"></i>
+                            <h5>No articles created yet</h5>
+                            <p class="small mb-0">You have not created any news articles. Click "Create Article" to write your first article!</p>
+                        </td>
+                    </tr>
+                }
+                else
+                {
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td class="fw-semibold">@item.NewsArticleId</td>
+                            <td>
+                                <div class="fw-bold">@item.NewsTitle</div>
+                                <div class="text-muted small text-truncate" style="max-width: 320px;">@item.Headline</div>
+                            </td>
+                            <td>
+                                <span class="badge bg-primary-subtle text-primary border border-primary-subtle">
+                                    @(item.Category?.CategoryName ?? item.CategoryName ?? "N/A")
+                                </span>
+                            </td>
+                            <td>
+                                @if (item.NewsStatus)
+                                {
+                                    <span class="badge bg-success-subtle text-success border border-success-subtle">Active</span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-secondary-subtle text-secondary border border-secondary-subtle">Inactive</span>
+                                }
+                            </td>
+                            <td class="small text-muted">
+                                @(item.CreatedDate?.ToString("yyyy-MM-dd HH:mm") ?? "N/A")
+                            </td>
+                            <td class="small text-muted">
+                                @(item.ModifiedDate?.ToString("yyyy-MM-dd HH:mm") ?? "-")
+                            </td>
+                            <td class="text-end">
+                                <button class="btn btn-sm btn-outline-primary me-1" data-modal-url="@Url.Action("Edit", new { id = item.NewsArticleId })" title="Edit">
+                                    <i class="bi bi-pencil-square"></i> Edit
+                                </button>
+                                <button class="btn btn-sm btn-outline-danger" data-delete-url="@Url.Action("Delete", new { id = item.NewsArticleId })" data-delete-name="@item.NewsTitle" title="Delete">
+                                    <i class="bi bi-trash"></i> Delete
+                                </button>
+                            </td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

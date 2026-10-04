@@ -1,0 +1,87 @@
+﻿@model List<_21_NguyenQuangHuy_Assignment01_FrontEnd.Models.NewsArticleVM>
+@{
+    ViewData["Title"] = "Public News";
+    var categories = ViewBag.Categories as List<_21_NguyenQuangHuy_Assignment01_FrontEnd.Models.CategoryVM> ?? new();
+    short? selectedCategory = ViewBag.SelectedCategory;
+    string currentSearch = ViewBag.CurrentSearch ?? "";
+}
+
+<div class="row align-items-center mb-4">
+    <div class="col-md-6">
+        <h2 class="fw-bold mb-0"><i class="bi bi-newspaper text-primary me-2"></i>Campus News & Announcements</h2>
+        <p class="text-muted small mb-0">Stay updated with the latest news from FUNews</p>
+    </div>
+    <div class="col-md-6 mt-3 mt-md-0">
+        <form asp-controller="Home" asp-action="Index" method="get" class="row g-2">
+            <div class="col-sm-5">
+                <select name="categoryId" class="form-select" onchange="this.form.submit()">
+                    <option value="">-- All Categories --</option>
+                    @foreach (var cat in categories)
+                    {
+                        <option value="@cat.CategoryId" selected="@(selectedCategory == cat.CategoryId)">@cat.CategoryName</option>
+                    }
+                </select>
+            </div>
+            <div class="col-sm-7">
+                <div class="input-group">
+                    <input type="text" name="search" value="@currentSearch" class="form-control" placeholder="Search news..." />
+                    <button type="submit" class="btn btn-primary"><i class="bi bi-search"></i></button>
+                    @if (!string.IsNullOrWhiteSpace(currentSearch) || selectedCategory.HasValue)
+                    {
+                        <a asp-action="Index" class="btn btn-outline-secondary" title="Clear filter"><i class="bi bi-x-lg"></i></a>
+                    }
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+@if (Model == null || Model.Count == 0)
+{
+    <div class="alert alert-info text-center py-5">
+        <i class="bi bi-inbox fs-1 d-block mb-2"></i>
+        <h5>No active news articles found</h5>
+        <p class="text-muted mb-0">Try changing your search keywords or category filter.</p>
+    </div>
+}
+else
+{
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+        @foreach (var item in Model)
+        {
+            <div class="col">
+                <div class="card h-100 shadow-sm border-0 d-flex flex-column">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-start mb-2">
+                            <span class="badge bg-primary-subtle text-primary border border-primary-subtle">
+                                <i class="bi bi-folder2 me-1"></i>@(item.Category?.CategoryName ?? item.CategoryName ?? "General")
+                            </span>
+                            <small class="text-muted">
+                                <i class="bi bi-calendar3 me-1"></i>@(item.CreatedDate?.ToString("MMM dd, yyyy") ?? "N/A")
+                            </small>
+                        </div>
+                        <h5 class="card-title fw-bold text-dark text-truncate-2">
+                            <a asp-action="Details" asp-route-id="@item.NewsArticleId" class="text-decoration-none text-dark stretched-link">
+                                @item.NewsTitle
+                            </a>
+                        </h5>
+                        <p class="card-text text-muted small text-truncate-3 mb-3">
+                            @item.Headline
+                        </p>
+                    </div>
+                    <div class="card-footer bg-transparent border-0 pt-0 pb-3 mt-auto position-relative" style="z-index: 2;">
+                        @if (item.Tags != null && item.Tags.Count > 0)
+                        {
+                            <div class="d-flex flex-wrap gap-1">
+                                @foreach (var tag in item.Tags)
+                                {
+                                    <span class="badge bg-secondary-subtle text-secondary small">#@tag.TagName</span>
+                                }
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+}

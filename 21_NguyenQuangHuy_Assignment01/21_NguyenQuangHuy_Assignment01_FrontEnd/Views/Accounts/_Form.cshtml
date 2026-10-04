@@ -1,0 +1,57 @@
+﻿@model _21_NguyenQuangHuy_Assignment01_FrontEnd.Models.AccountVM
+@{
+    bool isEdit = Model.AccountId > 0;
+}
+
+<div class="modal-header">
+    <h5 class="modal-title fw-bold" id="appModalTitle">
+        <i class="bi @(isEdit ? "bi-pencil-square text-warning" : "bi-person-plus text-primary") me-2"></i>
+        @(isEdit ? "Edit Account" : "Create New Account")
+    </h5>
+    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+</div>
+
+<form asp-action="@(isEdit ? "Edit" : "Create")" asp-route-id="@(isEdit ? Model.AccountId : null)" method="post">
+    @Html.AntiForgeryToken()
+    <input type="hidden" asp-for="AccountId" />
+
+    <div class="modal-body p-4">
+        <div asp-validation-summary="ModelOnly" class="alert alert-danger py-2 small" role="alert"></div>
+
+        <div class="mb-3">
+            <label asp-for="AccountName" class="form-label fw-semibold"></label>
+            <input asp-for="AccountName" class="form-control" placeholder="Enter full name" />
+            <span asp-validation-for="AccountName" class="text-danger small"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="AccountEmail" class="form-label fw-semibold"></label>
+            <input asp-for="AccountEmail" class="form-control" placeholder="name@example.com" />
+            <span asp-validation-for="AccountEmail" class="text-danger small"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="AccountRole" class="form-label fw-semibold"></label>
+            <select asp-for="AccountRole" class="form-select">
+                <option value="1">Staff (Role 1)</option>
+                <option value="2">Lecturer (Role 2)</option>
+            </select>
+            <span asp-validation-for="AccountRole" class="text-danger small"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="AccountPassword" class="form-label fw-semibold">
+                Password @(isEdit ? "(Leave blank to keep existing password)" : "")
+            </label>
+            <input asp-for="AccountPassword" type="password" class="form-control" placeholder="••••••••" />
+            <span asp-validation-for="AccountPassword" class="text-danger small"></span>
+        </div>
+    </div>
+
+    <div class="modal-footer bg-light">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+        <button type="submit" class="btn btn-primary">
+            <i class="bi bi-save me-1"></i> Save Changes
+        </button>
+    </div>
+</form>

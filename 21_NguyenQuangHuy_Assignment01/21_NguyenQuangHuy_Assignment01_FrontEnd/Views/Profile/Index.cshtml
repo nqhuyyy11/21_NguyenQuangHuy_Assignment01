@@ -1,0 +1,44 @@
+﻿@model _21_NguyenQuangHuy_Assignment01_FrontEnd.Models.ProfileVM
+@{
+    ViewData["Title"] = "My Profile";
+}
+
+<div class="row justify-content-center">
+    <div class="col-md-8 col-lg-6">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2 class="fw-bold mb-0"><i class="bi bi-person-badge-fill text-primary me-2"></i>My Profile</h2>
+            <button class="btn btn-primary" data-modal-url="@Url.Action("Edit")">
+                <i class="bi bi-pencil-square me-1"></i> Edit Profile
+            </button>
+        </div>
+
+        <div class="card shadow-sm border-0 rounded-3">
+            <div class="card-body p-4 text-center border-bottom bg-light">
+                <div class="bg-primary text-white rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 72px; height: 72px;">
+                    <i class="bi bi-person-fill fs-1"></i>
+                </div>
+                <h4 class="fw-bold mb-1">@Model.AccountName</h4>
+                <p class="text-muted mb-2">@Model.AccountEmail</p>
+                <span class="badge bg-success-subtle text-success border border-success-subtle px-3 py-2 fs-6">
+                    <i class="bi bi-shield-check me-1"></i>Role: @Model.Role
+                </span>
+            </div>
+            <div class="card-body p-4">
+                <h5 class="fw-bold mb-3">Account Details</h5>
+                <dl class="row mb-0">
+                    <dt class="col-sm-4 text-muted">Account ID</dt>
+                    <dd class="col-sm-8 fw-semibold">@Model.AccountId</dd>
+
+                    <dt class="col-sm-4 text-muted">Full Name</dt>
+                    <dd class="col-sm-8 fw-semibold">@Model.AccountName</dd>
+
+                    <dt class="col-sm-4 text-muted">Email Address</dt>
+                    <dd class="col-sm-8 fw-semibold">@Model.AccountEmail</dd>
+
+                    <dt class="col-sm-4 text-muted">System Role</dt>
+                    <dd class="col-sm-8 fw-semibold">@Model.Role</dd>
+                </dl>
+            </div>
+        </div>
+    </div>
+</div>

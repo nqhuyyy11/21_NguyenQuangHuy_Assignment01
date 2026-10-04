@@ -1,0 +1,50 @@
+﻿@model _21_NguyenQuangHuy_Assignment01_FrontEnd.Models.LoginVM
+@{
+    ViewData["Title"] = "Login";
+}
+
+<div class="row justify-content-center mt-5">
+    <div class="col-md-5 col-lg-4">
+        <div class="card shadow-sm border-0 rounded-3">
+            <div class="card-body p-4">
+                <div class="text-center mb-4">
+                    <div class="bg-primary text-white rounded-circle d-inline-flex align-items-center justify-content-center mb-2" style="width: 54px; height: 54px;">
+                        <i class="bi bi-person-fill fs-3"></i>
+                    </div>
+                    <h3 class="fw-bold">Sign In</h3>
+                    <p class="text-muted small">FUNews Management System</p>
+                </div>
+
+                <form asp-action="Login" method="post" asp-route-returnUrl="@ViewBag.ReturnUrl">
+                    @Html.AntiForgeryToken()
+                    <div asp-validation-summary="ModelOnly" class="alert alert-danger py-2 small" role="alert"></div>
+
+                    <div class="mb-3">
+                        <label asp-for="Email" class="form-label fw-semibold"></label>
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="bi bi-envelope"></i></span>
+                            <input asp-for="Email" class="form-control" placeholder="name@example.com" autofocus />
+                        </div>
+                        <span asp-validation-for="Email" class="text-danger small"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="Password" class="form-label fw-semibold"></label>
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="bi bi-lock"></i></span>
+                            <input asp-for="Password" class="form-control" placeholder="••••••••" />
+                        </div>
+                        <span asp-validation-for="Password" class="text-danger small"></span>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary w-100 py-2 mt-2 fw-semibold">
+                        <i class="bi bi-box-arrow-in-right me-1"></i> Sign In
+                    </button>
+                </form>
+            </div>
+            <div class="card-footer bg-light p-3 text-center small text-muted">
+                Demo Accounts: Admin in appsettings | Staff/Lecturer in DB
+            </div>
+        </div>
+    </div>
+</div>

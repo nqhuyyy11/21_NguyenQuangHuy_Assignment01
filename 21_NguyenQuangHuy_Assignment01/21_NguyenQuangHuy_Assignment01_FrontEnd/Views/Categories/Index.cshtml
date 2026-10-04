@@ -1,0 +1,106 @@
+﻿@model List<_21_NguyenQuangHuy_Assignment01_FrontEnd.Models.CategoryVM>
+@{
+    ViewData["Title"] = "Category Management";
+    string currentSearch = ViewBag.CurrentSearch ?? "";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2">
+    <div>
+        <h2 class="fw-bold mb-0"><i class="bi bi-tags-fill text-primary me-2"></i>Category Management</h2>
+        <p class="text-muted small mb-0">Manage news article categories and hierarchies</p>
+    </div>
+    <div>
+        <button class="btn btn-primary" data-modal-url="@Url.Action("Create")">
+            <i class="bi bi-plus-circle me-1"></i> Create Category
+        </button>
+    </div>
+</div>
+
+<div class="card shadow-sm border-0 mb-4">
+    <div class="card-body p-3">
+        <form asp-action="Index" method="get" class="row g-2">
+            <div class="col-md-6 col-lg-5">
+                <div class="input-group">
+                    <span class="input-group-text bg-white"><i class="bi bi-search text-muted"></i></span>
+                    <input type="text" name="search" value="@currentSearch" class="form-control" placeholder="Search by category name..." />
+                    <button type="submit" class="btn btn-primary">Search</button>
+                    @if (!string.IsNullOrWhiteSpace(currentSearch))
+                    {
+                        <a asp-action="Index" class="btn btn-outline-secondary" title="Clear search"><i class="bi bi-x-lg"></i></a>
+                    }
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="card shadow-sm border-0">
+    <div class="table-responsive">
+        <table class="table table-hover align-middle mb-0">
+            <thead class="table-light">
+                <tr>
+                    <th style="width: 80px;">ID</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                    <th>Parent Category</th>
+                    <th style="width: 100px;">Status</th>
+                    <th class="text-end" style="width: 180px;">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model == null || Model.Count == 0)
+                {
+                    <tr>
+                        <td colspan="6" class="text-center py-4 text-muted">
+                            <i class="bi bi-inbox fs-3 d-block mb-1"></i>
+                            No categories found.
+                        </td>
+                    </tr>
+                }
+                else
+                {
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td class="fw-semibold">@item.CategoryId</td>
+                            <td class="fw-bold">@item.CategoryName</td>
+                            <td class="text-muted small text-truncate" style="max-width: 280px;" title="@item.CategoryDesciption">
+                                @item.CategoryDesciption
+                            </td>
+                            <td>
+                                @if (item.ParentCategory != null && item.ParentCategoryId != item.CategoryId)
+                                {
+                                    <span class="badge bg-light text-dark border">
+                                        <i class="bi bi-diagram-2 me-1"></i>@item.ParentCategory.CategoryName
+                                    </span>
+                                }
+                                else
+                                {
+                                    <span class="text-muted small">None (Root)</span>
+                                }
+                            </td>
+                            <td>
+                                @if (item.IsActive)
+                                {
+                                    <span class="badge bg-success-subtle text-success border border-success-subtle">Active</span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-secondary-subtle text-secondary border border-secondary-subtle">Inactive</span>
+                                }
+                            </td>
+                            <td class="text-end">
+                                <button class="btn btn-sm btn-outline-primary me-1" data-modal-url="@Url.Action("Edit", new { id = item.CategoryId })" title="Edit">
+                                    <i class="bi bi-pencil-square"></i> Edit
+                                </button>
+                                <button class="btn btn-sm btn-outline-danger" data-delete-url="@Url.Action("Delete", new { id = item.CategoryId })" data-delete-name="@item.CategoryName" title="Delete">
+                                    <i class="bi bi-trash"></i> Delete
+                                </button>
+                            </td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

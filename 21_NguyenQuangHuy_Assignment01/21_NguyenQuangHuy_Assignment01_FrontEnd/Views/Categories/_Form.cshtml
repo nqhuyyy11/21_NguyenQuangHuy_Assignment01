@@ -1,0 +1,59 @@
+﻿@model _21_NguyenQuangHuy_Assignment01_FrontEnd.Models.CategoryVM
+@{
+    bool isEdit = Model.CategoryId > 0;
+    var parents = ViewBag.Parents as List<_21_NguyenQuangHuy_Assignment01_FrontEnd.Models.CategoryVM> ?? new();
+}
+
+<div class="modal-header">
+    <h5 class="modal-title fw-bold" id="appModalTitle">
+        <i class="bi @(isEdit ? "bi-pencil-square text-warning" : "bi-plus-circle text-primary") me-2"></i>
+        @(isEdit ? "Edit Category" : "Create New Category")
+    </h5>
+    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+</div>
+
+<form asp-action="@(isEdit ? "Edit" : "Create")" asp-route-id="@(isEdit ? Model.CategoryId : null)" method="post">
+    @Html.AntiForgeryToken()
+    <input type="hidden" asp-for="CategoryId" />
+
+    <div class="modal-body p-4">
+        <div asp-validation-summary="ModelOnly" class="alert alert-danger py-2 small" role="alert"></div>
+
+        <div class="mb-3">
+            <label asp-for="CategoryName" class="form-label fw-semibold"></label>
+            <input asp-for="CategoryName" class="form-control" placeholder="e.g. Academic News" />
+            <span asp-validation-for="CategoryName" class="text-danger small"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="CategoryDesciption" class="form-label fw-semibold"></label>
+            <textarea asp-for="CategoryDesciption" class="form-control" rows="3" placeholder="Enter brief category description..."></textarea>
+            <span asp-validation-for="CategoryDesciption" class="text-danger small"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="ParentCategoryId" class="form-label fw-semibold"></label>
+            <select asp-for="ParentCategoryId" class="form-select">
+                <option value="">-- None (Root Category) --</option>
+                @foreach (var p in parents)
+                {
+                    <option value="@p.CategoryId">@p.CategoryName</option>
+                }
+            </select>
+            <span asp-validation-for="ParentCategoryId" class="text-danger small"></span>
+        </div>
+
+        <div class="form-check form-switch mb-3">
+            <input asp-for="IsActive" class="form-check-input" type="checkbox" id="isActiveSwitch" />
+            <label class="form-check-label fw-semibold" for="isActiveSwitch">Active</label>
+            <div class="form-text small">Only active categories can be selected when creating or editing news articles.</div>
+        </div>
+    </div>
+
+    <div class="modal-footer bg-light">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+        <button type="submit" class="btn btn-primary">
+            <i class="bi bi-save me-1"></i> Save Changes
+        </button>
+    </div>
+</form>

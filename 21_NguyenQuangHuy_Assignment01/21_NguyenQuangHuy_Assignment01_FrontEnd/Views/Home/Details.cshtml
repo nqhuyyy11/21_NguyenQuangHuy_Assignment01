@@ -1,0 +1,67 @@
+﻿@model _21_NguyenQuangHuy_Assignment01_FrontEnd.Models.NewsArticleVM
+@{
+    ViewData["Title"] = Model.NewsTitle;
+}
+
+<div class="row justify-content-center">
+    <div class="col-lg-9">
+        <nav aria-label="breadcrumb" class="mb-3">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a asp-action="Index">Home</a></li>
+                <li class="breadcrumb-item active" aria-current="page">News Detail</li>
+            </ol>
+        </nav>
+
+        <article class="bg-white p-4 p-md-5 rounded-3 shadow-sm border">
+            <div class="mb-3">
+                <span class="badge bg-primary fs-6 me-2">
+                    <i class="bi bi-folder2 me-1"></i>@(Model.Category?.CategoryName ?? Model.CategoryName ?? "General")
+                </span>
+                <span class="text-muted small">
+                    <i class="bi bi-calendar-event me-1"></i>@(Model.CreatedDate?.ToString("MMMM dd, yyyy") ?? "N/A")
+                </span>
+                @if (!string.IsNullOrEmpty(Model.CreatedByName))
+                {
+                    <span class="text-muted small ms-3">
+                        <i class="bi bi-person me-1"></i>By @Model.CreatedByName
+                    </span>
+                }
+            </div>
+
+            <h1 class="fw-bold mb-3">@Model.NewsTitle</h1>
+
+            <div class="lead text-secondary fst-italic mb-4 p-3 bg-light border-start border-4 border-primary rounded">
+                @Model.Headline
+            </div>
+
+            <div class="article-content text-dark mb-4 fs-6" style="white-space: pre-line; line-height: 1.8;">
+                @Model.NewsContent
+            </div>
+
+            @if (!string.IsNullOrEmpty(Model.NewsSource))
+            {
+                <div class="text-muted small mb-4">
+                    <i class="bi bi-link-45deg me-1"></i><strong>Source:</strong> @Model.NewsSource
+                </div>
+            }
+
+            @if (Model.Tags != null && Model.Tags.Count > 0)
+            {
+                <hr class="my-4" />
+                <div class="d-flex align-items-center flex-wrap gap-2">
+                    <strong class="text-muted me-1"><i class="bi bi-tags me-1"></i>Tags:</strong>
+                    @foreach (var tag in Model.Tags)
+                    {
+                        <span class="badge bg-secondary-subtle text-secondary fs-6 py-2 px-3">#@tag.TagName</span>
+                    }
+                </div>
+            }
+
+            <div class="mt-5 pt-3 border-top">
+                <a asp-action="Index" class="btn btn-outline-primary">
+                    <i class="bi bi-arrow-left me-1"></i> Back to News List
+                </a>
+            </div>
+        </article>
+    </div>
+</div>

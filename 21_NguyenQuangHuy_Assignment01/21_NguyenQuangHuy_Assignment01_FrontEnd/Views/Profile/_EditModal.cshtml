@@ -1,0 +1,52 @@
+﻿@model _21_NguyenQuangHuy_Assignment01_FrontEnd.Models.ProfileVM
+
+<div class="modal-header">
+    <h5 class="modal-title fw-bold" id="appModalTitle">
+        <i class="bi bi-person-gear text-primary me-2"></i>Edit Profile
+    </h5>
+    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+</div>
+
+<form asp-action="Edit" method="post">
+    @Html.AntiForgeryToken()
+    <input type="hidden" asp-for="AccountId" />
+    <input type="hidden" asp-for="Role" />
+
+    <div class="modal-body p-4">
+        <div asp-validation-summary="ModelOnly" class="alert alert-danger py-2 small" role="alert"></div>
+
+        <div class="mb-3">
+            <label asp-for="AccountName" class="form-label fw-semibold"></label>
+            <input asp-for="AccountName" class="form-control" />
+            <span asp-validation-for="AccountName" class="text-danger small"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="AccountEmail" class="form-label fw-semibold"></label>
+            <input asp-for="AccountEmail" class="form-control" />
+            <span asp-validation-for="AccountEmail" class="text-danger small"></span>
+        </div>
+
+        <hr class="my-4" />
+        <h6 class="fw-bold mb-3"><i class="bi bi-key-fill text-muted me-1"></i>Change Password (Optional)</h6>
+
+        <div class="mb-3">
+            <label asp-for="CurrentPassword" class="form-label fw-semibold"></label>
+            <input asp-for="CurrentPassword" type="password" class="form-control" placeholder="Enter current password if changing" />
+            <span asp-validation-for="CurrentPassword" class="text-danger small"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="NewPassword" class="form-label fw-semibold"></label>
+            <input asp-for="NewPassword" type="password" class="form-control" placeholder="Enter new password (optional)" />
+            <span asp-validation-for="NewPassword" class="text-danger small"></span>
+        </div>
+    </div>
+
+    <div class="modal-footer bg-light">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+        <button type="submit" class="btn btn-primary">
+            <i class="bi bi-save me-1"></i> Save Changes
+        </button>
+    </div>
+</form>
